@@ -5,7 +5,9 @@ import { GeistMono } from "geist/font/mono";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import DefaultErrorBoundary from "./error-boundary/DefaultErrorBoundary";
-import ClientProviders from "./client-providers"; // ✅ New client component
+import dynamicImport from "next/dynamic";
+
+const ClientProviders = dynamicImport(() => import("./client-providers"), { ssr: false });
 
 export const dynamic = "force-dynamic";
 

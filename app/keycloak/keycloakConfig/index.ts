@@ -13,12 +13,12 @@ const getRedirectUri = () => {
 
 export const KEYCLOAK_CONFIG = Object.freeze({
   automaticSilentRenew: true,
-  scope: process.env.NEXT_PUBLIC_KC_SCOPE ?? "openid profile email role",
-  authority: process.env.NEXT_PUBLIC_KC_AUTHORITY ?? "http://192.168.1.160:8080/realms/cms",
-  client_id: process.env.NEXT_PUBLIC_KC_CLIENT_ID ?? "front",
+  scope: process.env.NEXT_PUBLIC_KC_SCOPE,
+  authority: process.env.NEXT_PUBLIC_KC_AUTHORITY, 
+  client_id: process.env.NEXT_PUBLIC_KC_CLIENT_ID ,
   post_logout_redirect_uri: getRedirectUri(),
-  response_type: "code",
-  response_mode: "query",
+  response_type: process.env.NEXT_PUBLIC_KC_RESPONSE_TYPE,
+  response_mode: process.env.NEXT_PUBLIC_KC_RESPONSE_MODE,
   logout_endpoint: "/protocol/openid-connect/logout",
   redirect_uri: getRedirectUri(),
 });

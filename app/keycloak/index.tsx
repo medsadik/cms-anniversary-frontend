@@ -39,7 +39,7 @@ export default function AuthProvider({ userManager, children }: AuthProviderProp
           ) {
             // redirect to home if URL contains auth tokens
             if (newState.state.value && containsAuthTokensInUrl(window.location)) {
-              router.push("/");
+              router.replace("/dashboard");
               localStorage.removeItem(PREVIOUS_PATHNAME_LS_KEY);
             }
           }

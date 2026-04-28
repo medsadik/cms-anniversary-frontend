@@ -28,20 +28,11 @@ export default function AuthProvider({ userManager, children }: AuthProviderProp
           if (
             newState.state.status === "success" &&
             typeof window !== "undefined" &&
-            window.location.pathname &&
-            window.location.search &&
-            window.location.hash &&
-            window.location.href &&
-            window.location.origin &&
-            window.location.host &&
-            window.location.hostname &&
-            window.location.port
+            newState.state.value &&
+            containsAuthTokensInUrl(window.location)
           ) {
-            // redirect to home if URL contains auth tokens
-            if (newState.state.value && containsAuthTokensInUrl(window.location)) {
-              router.replace("/dashboard");
-              localStorage.removeItem(PREVIOUS_PATHNAME_LS_KEY);
-            }
+            router.replace("/dashboard");
+            localStorage.removeItem(PREVIOUS_PATHNAME_LS_KEY);
           }
         },
       },

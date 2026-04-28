@@ -24,7 +24,7 @@ export default function AuthProvider({ userManager, children }: AuthProviderProp
       lazy: false,
       source: currentUserSource,
       events: {
-        change: (newState) => {
+        change: (newState: any) => {
           if (
             newState.state.status === "success" &&
             typeof window !== "undefined" &&
@@ -55,12 +55,10 @@ export default function AuthProvider({ userManager, children }: AuthProviderProp
 
   if (isError) {
     if (error === WAITING_LOGIN_ERROR) return null; // waiting for login redirect
-    console.error("Authentication error:", error);
-    return (
-      <div style={{ padding: "2rem", textAlign: "center", color: "red" }}>
-        Authentication failed. Please refresh.
-      </div>
-    );
+    // Any other error: clear stale OIDC state and retry login
+    console.error("Authentication error — retrying login:", error);
+    import("@/app/keycloak/keycloakConfig").then(({ login }) => login());
+    return null;
   }
 
   // fallback loading

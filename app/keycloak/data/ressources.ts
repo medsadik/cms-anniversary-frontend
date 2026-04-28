@@ -78,13 +78,20 @@ export const currentUserSource = createSource(
     };
 
     if (containsAuthTokensInUrl(window.location)) {
-      const user = await signinCallback();
-      if (!user) {
+      try {
+        const user = await signinCallback();
+        if (!user) {
+          const ensured = await ensureAuth();
+          if (ensured === "waiting-login") return Promise.reject(WAITING_LOGIN_ERROR);
+          return handleUser(ensured);
+        }
+        return handleUser(user);
+      } catch {
+        // signinCallback failed (e.g. stale state, expired code) — start a fresh login
         const ensured = await ensureAuth();
         if (ensured === "waiting-login") return Promise.reject(WAITING_LOGIN_ERROR);
         return handleUser(ensured);
       }
-      return handleUser(user);
     }
 
     const ensured = await ensureAuth();
